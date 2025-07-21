@@ -11,4 +11,6 @@ fi
 "$EDITOR" "$temp"
 gpg --quiet --symmetric --batch --yes --passphrase "$passphrase" --output "$secret_doc_path" "$temp"
 )
+subshell_exit_code="$?"
 rm "$temp"
+exit "$subshell_exit_code"

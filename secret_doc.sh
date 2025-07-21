@@ -1,17 +1,14 @@
 #!/bin/bash
-set -euo pipefail
 secret_doc_path="$1"
 temp="$(mktemp)"
-trap 'rm -f "$temp"' SIGTERM SIGINT EXIT
-passphrase=""
-until gpg --pinentry-mode loopback --passphrase="$passphrase" --output $file_to_edit $ecrypted_file; do
-    read -r password;
-done
-
+(
+set -euo pipefail
+read -s -p "Enter the passphrase (hidden): " passphrase
+echo
 if [ -f "$secret_doc_path" ]; then
-    gpg --quiet --batch --yes --passphrase "$passphrase" --output "$temp" "$secret_doc_path"
+    gpg --quiet --batch --yes --passphrase "$passphrase" --decrypt "$secret_doc_path" > "$temp"
 fi
-"$editor" "$temp"
-gpg --quiet --batch --yes --passphrase "$PASSPHRASE" --output "$secret_doc_path" "$temp"
-age -p < "$temp" > "$secret_doc_path"
+"$EDITOR" "$temp"
+gpg --quiet --symmetric --batch --yes --passphrase "$passphrase" --output "$secret_doc_path" "$temp"
+)
 rm "$temp"

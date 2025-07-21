@@ -1,0 +1,5 @@
+A simple encryptor/decryptor. Decrypts a file for editing (with AGE), lets you edit it (with "$EDITOR"), and then encrypts it back
+
+Interface:
+
+./secret_doc.sh "$SECRET_DOC_PATH"

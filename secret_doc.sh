@@ -12,5 +12,5 @@ fi
 gpg --quiet --symmetric --batch --yes --passphrase "$passphrase" --output "$secret_doc_path" "$temp"
 )
 subshell_exit_code="$?"
-rm "$temp"
+shred -fu "$temp"
 exit "$subshell_exit_code"
